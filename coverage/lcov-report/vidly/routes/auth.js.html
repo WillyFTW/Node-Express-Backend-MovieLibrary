@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for vidly/routes/auth.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="..\..\prettify.css" />
+    <link rel="stylesheet" href="..\..\base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(..\..\sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="..\..\index.html">All files</a> / <a href="index.html">vidly/routes</a> auth.js
+    </h1>
+    <div class='clearfix'>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span></td><td class="text"><pre class="prettyprint lang-js">//Authentication of user (password, email login).
+const Joi = require("joi");
+const bcrypt = require("bcrypt");
+const _ = require("lodash");
+const mongoose = require("mongoose");
+const express = require("express");
+const {User} = require("../models/user");
+const router = express.Router();
+&nbsp;
+//POST
+router.post("/", <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; { //"async" is neccessary when await is used in the body
+    //Joi validation
+    const {error} = <span class="cstat-no" title="statement not covered" >validate(req.body);</span>
+<span class="cstat-no" title="statement not covered" >    if(error) {<span class="cstat-no" title="statement not covered" >return res.status(400).send(error.details[0].message)}</span></span>
+    //check if a user with that email exists.
+    let user = <span class="cstat-no" title="statement not covered" >await User.findOne({email: req.body.email});</span>
+<span class="cstat-no" title="statement not covered" >    if(!user) {</span>
+        //here we use error 400 instesd of 404 because we dont want to share if an email or password was not found. Instead we return a bad request.
+<span class="cstat-no" title="statement not covered" >        return(res.status(400).send("Invalid email or password."));</span>
+    }else {
+        //check if the given password is the equivalent to the hashed and salted password in the db.
+        const validPassword = <span class="cstat-no" title="statement not covered" >await bcrypt.compare(req.body.password, user.password);</span>
+<span class="cstat-no" title="statement not covered" >        if(!validPassword) {<span class="cstat-no" title="statement not covered" >return(res.status(400).send("Invalid email or password."))}</span></span>
+        //create the token with the environment variable of the private Key and the payload
+        
+        const token = <span class="cstat-no" title="statement not covered" >user.generateAuthToken();</span>
+        //sending the token in the header of the response. Custom defined headers always should start with "-x" as naming convention
+<span class="cstat-no" title="statement not covered" >        res.header("x-auth-token", token).send(_.pick(user, ["_id", "name", "email"]));</span>
+    };
+});
+&nbsp;
+//Validates the req
+function <span class="fstat-no" title="function not covered" >validate(</span>req) {
+    const schema = <span class="cstat-no" title="statement not covered" >Joi.object({</span>
+        email: Joi.string().min(5).max(255).required().email(),
+        password: Joi.string().min(5).max(255).required()
+    });
+<span class="cstat-no" title="statement not covered" >    return schema.validate(req);</span>
+}
+&nbsp;
+module.exports = router;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue Feb 06 2024 20:25:52 GMT+0100 (Mitteleuropäische Normalzeit)
+</div>
+</div>
+<script src="..\..\prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="..\..\sorter.js"></script>
+</body>
+</html>

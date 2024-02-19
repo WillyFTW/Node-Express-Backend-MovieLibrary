@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for vidly/routes/genres.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="..\..\prettify.css" />
+    <link rel="stylesheet" href="..\..\base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(..\..\sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="..\..\index.html">All files</a> / <a href="index.html">vidly/routes</a> genres.js
+    </h1>
+    <div class='clearfix'>
+    </div>
+  </div>
+  <div class='status-line medium'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64</td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span></td><td class="text"><pre class="prettyprint lang-js">const validateObjectId = require("../middleware/validateObjectId");
+const admin = require("../middleware/admin");
+const auth = require("../middleware/auth");
+const mongoose = require("mongoose");
+const express = require("express");
+const {Genre, validate} = require("../models/genre");
+const router = express.Router();
+&nbsp;
+&nbsp;
+&nbsp;
+//GET
+//We call asyncMiddleware which returns the same function we pass as parameter but in try catch bracets.
+//The returned function then is a parameter of the router and gets called by express.
+router.get("/", async (req, res) =&gt; {
+    //Genre.find().sort("name").then().catch() if you use promisses or try,catch for await. 
+    //But we require express-async-errors in index so we dont need a catch.
+    //Test:throw new Error("Test error");
+    const genres = await Genre.find().sort("name");
+    res.send(genres);
+});
+&nbsp;
+//POST
+//auth is a middleware function that gets called before the actual "post code".
+router.post("/", auth, async (req, res) =&gt; {
+    const validation = validate(req.body);
+    if(validation.error) {
+        res.status(400).send(validation.error.details[0].message);
+        return;
+    }
+    
+    //genre gets saved with an id, which gets saved and returned to client
+    const genre = new Genre({name: req.body.name});
+    await genre.save();
+    res.send(genre);
+});
+&nbsp;
+//PUT
+router.put('/:id', <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {
+    //this validation could also be done via the validation middleware. See routes/returns
+    const { error } = <span class="cstat-no" title="statement not covered" >validate(req.body); </span>
+<span class="cstat-no" title="statement not covered" >    if (error) <span class="cstat-no" title="statement not covered" >return res.status(400).send(error.details[0].message);</span></span>
+    
+    //returns the new updated object instead of the old because of : {new: true}
+    const genre = <span class="cstat-no" title="statement not covered" >await Genre.findByIdAndUpdate(req.params.id, {name: req.body.name}, {new: true});</span>
+<span class="cstat-no" title="statement not covered" >    if (!genre) <span class="cstat-no" title="statement not covered" >return res.status(404).send('The genre with the given ID was not found.');</span></span>
+<span class="cstat-no" title="statement not covered" >    res.send(genre);</span>
+});
+//DELETE
+router.delete('/:id',[auth, admin], <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {
+    const genre = <span class="cstat-no" title="statement not covered" >await Genre.findByIdAndRemove(req.params.id);</span>
+    
+<span class="cstat-no" title="statement not covered" >    if (!genre) <span class="cstat-no" title="statement not covered" >return res.status(404).send('The genre with the given ID was not found.');</span></span>
+  
+<span class="cstat-no" title="statement not covered" >    res.send(genre);</span>
+  });
+&nbsp;
+//GET
+router.get('/:id', validateObjectId, async (req, res) =&gt; {
+    const genre = await Genre.findById(req.params.id);
+    if (!genre) return res.status(404).send('The genre with the given ID was not found.');
+    res.send(genre);
+});
+&nbsp;
+module.exports = router;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue Feb 06 2024 20:25:52 GMT+0100 (Mitteleuropäische Normalzeit)
+</div>
+</div>
+<script src="..\..\prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="..\..\sorter.js"></script>
+</body>
+</html>
