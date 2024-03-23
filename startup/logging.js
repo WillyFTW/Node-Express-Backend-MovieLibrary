@@ -9,8 +9,7 @@ module.exports = function() {
 
 //on event of uncaughtExeption(anywhere in code) the ex gets logged and the programm get terminated.
 //But only works with Uncaought Exceptions at this time not unhandled Rejections!
-//!!!sth not right. only when errors are thrown the winston messages get logged (like winston.info or winston.error only get logged when a error gets caught by this line.)
-//!!!probably i need two seperate winston loggers instead of the default winston logger
+
 
 winston.handleExceptions(
     new winston.transports.Console({colorize: true, prettyPrint: true}),
