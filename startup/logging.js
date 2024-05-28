@@ -12,8 +12,8 @@ module.exports = function() {
 
 
 winston.handleExceptions(
-    new winston.transports.Console({colorize: true, prettyPrint: true}),
-    new winston.transports.File({filename: "uncaughtExceptions.log"}));
+    new winston.transports.Console({colorize: true, prettyPrint: true}), //logs to console
+    new winston.transports.File({filename: "uncaughtExceptions.log"})); //logs to file
 
 //on event of unhandled Rejection(anywhere in code) we throw ex so winston.handleExceptions() logs it.
 //winston.handledRejections() doesnt exist at this time. Maybe in the future.
