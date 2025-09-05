@@ -17,4 +17,4 @@ const server = app.listen(port, () =>
   winston.info(`Listening on port ${port}...`)
 );
 
-module.exports = server;
+module.exports = server; // for testing
